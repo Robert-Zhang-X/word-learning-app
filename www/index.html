@@ -433,6 +433,38 @@
             color: var(--danger);
         }
 
+        /* Speaker Button */
+        .speak-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            margin-left: 8px;
+            background: var(--primary);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            vertical-align: middle;
+        }
+
+        .speak-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .speak-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
         /* Fill in Blank */
         .fill-blank-word {
             font-size: 2.5rem;
@@ -2439,7 +2471,10 @@
                 <div class="flashcard-container">
                     <div class="flashcard" id="flashcard">
                         <div class="flashcard-face flashcard-front" onclick="document.getElementById('flashcard').classList.toggle('flipped')">
-                            <div class="word">${word.word}</div>
+                            <div class="word" style="display:flex;align-items:center;justify-content:center;">
+                                ${word.word}
+                                <button class="speak-btn" onclick="event.stopPropagation(); speakWord('${word.word}')" title="播放发音">🔊</button>
+                            </div>
                             <div class="flashcard-phonetic">${word.phonetic || ''}</div>
                             <div class="flashcard-hint">点击卡片翻转查看答案</div>
                         </div>
@@ -2463,7 +2498,10 @@
                 <div class="flashcard-container">
                     <div class="flashcard" id="flashcard">
                         <div class="flashcard-face flashcard-front" onclick="document.getElementById('flashcard').classList.toggle('flipped')">
-                            <div class="word">${word.word}</div>
+                            <div class="word" style="display:flex;align-items:center;justify-content:center;">
+                                ${word.word}
+                                <button class="speak-btn" onclick="event.stopPropagation(); speakWord('${word.word}')" title="播放发音">🔊</button>
+                            </div>
                             <div class="flashcard-phonetic">${word.phonetic || ''}</div>
                             <div class="flashcard-hint">点击卡片翻转查看答案</div>
                         </div>
@@ -2503,10 +2541,12 @@
 
             container.innerHTML = `
                 <div class="card" id="choice-word-card" style="margin-bottom: 10px;">
-                    <div style="text-align:center;">
+                    <div style="text-align:center;display:flex;align-items:center;justify-content:center;">
                         <div style="font-size:2.8rem;font-weight:bold;color:var(--primary);">${word.word}</div>
-                        <div style="font-size:1.1rem;color:var(--text-light);margin-top:5px;">${word.phonetic || ''}</div>
+                        <button class="speak-btn" onclick="speakWord('${word.word}')" title="播放发音">🔊</button>
                     </div>
+                    <div style="font-size:1.1rem;color:var(--text-light);margin-top:5px;">${word.phonetic || ''}</div>
+                </div>
                 </div>
                 <div style="font-size:1rem;color:var(--text-light);text-align:center;margin-bottom:10px;">请选择正确的中文释义</div>
                 <div class="quiz-options" id="quiz-options" style="margin-bottom: 10px;">
@@ -2575,7 +2615,10 @@
 
         function renderFill(container, word) {
             container.innerHTML = `
-                <div class="fill-blank-word">${word.meaning}</div>
+                <div class="fill-blank-word" style="display:flex;align-items:center;justify-content:center;">
+                    ${word.meaning}
+                    <button class="speak-btn" onclick="speakWord('${word.word}')" title="听发音">🔊</button>
+                </div>
                 <div id="fill-result"></div>
                 <div id="fill-input-area">
                     <div class="fill-blank-hint">请拼写这个单词</div>
@@ -2656,7 +2699,10 @@
             
             container.innerHTML = `
                 <div class="sentence-card">
-                    <div class="sentence-target">${word.word}</div>
+                    <div class="sentence-target" style="display:flex;align-items:center;justify-content:center;">
+                        ${word.word}
+                        <button class="speak-btn" onclick="speakWord('${word.word}')" title="播放发音">🔊</button>
+                    </div>
                     <div class="sentence-meaning">${word.meaning}</div>
                 </div>
                 <div class="sentence-card" style="background:white;">
@@ -2792,6 +2838,36 @@
                 [array[i], array[j]] = [array[j], array[i]];
             }
             return array;
+        }
+
+        // ==================== WORD PRONUNCIATION ====================
+        function speakWord(word) {
+            if ('speechSynthesis' in window) {
+                // Cancel any ongoing speech
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+                utterance.pitch = 1;
+                
+                // Try to find English voice
+                const voices = window.speechSynthesis.getVoices();
+                const englishVoice = voices.find(v => v.lang.startsWith('en'));
+                if (englishVoice) {
+                    utterance.voice = englishVoice;
+                }
+                
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Initialize voices (some browsers load them async)
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.getVoices();
+            window.speechSynthesis.onvoiceschanged = () => {
+                window.speechSynthesis.getVoices();
+            };
         }
 
 // ==================== THEME SWITCHER ====================
