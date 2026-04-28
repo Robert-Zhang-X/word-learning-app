@@ -1174,6 +1174,32 @@
                     </button>
                 </div>
             </div>
+
+            <!-- Daily Learning Limit Setting -->
+            <div class="card" style="margin-top: 15px;">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <div>
+                        <div style="font-weight: 600; margin-bottom: 4px;">📊 每日学习数量</div>
+                        <div style="color: var(--text-light); font-size: 0.85rem;">设置每天学习多少个单词</div>
+                    </div>
+                    <select id="daily-limit-select" onchange="updateDailyLimit(this.value)" style="
+                        padding: 8px 12px;
+                        border-radius: 8px;
+                        border: 1px solid var(--border);
+                        background: var(--card);
+                        color: var(--text);
+                        font-size: 0.95rem;
+                        cursor: pointer;
+                    ">
+                        <option value="5">5个</option>
+                        <option value="10" selected>10个</option>
+                        <option value="15">15个</option>
+                        <option value="20">20个</option>
+                        <option value="30">30个</option>
+                        <option value="50">50个</option>
+                    </select>
+                </div>
+            </div>
         </div>
 
         <!-- Practice Screen (Hidden by default) -->
@@ -1795,6 +1821,9 @@
                 lastStudyDate: null,
                 dailyStats: [0, 0, 0, 0, 0, 0, 0] // Last 7 days
             },
+            settings: {
+                dailyLimit: 10  // 每日学习数量，默认10个
+            },
             reviewQueue: [],
             currentMode: 'flashcard',
             currentWordIndex: 0,
@@ -1827,6 +1856,8 @@
                 // Ensure stats structure
                 state.stats = { ...state.stats, ...(parsed.stats || {}) };
                 state.stats.dailyStats = state.stats.dailyStats || [0, 0, 0, 0, 0, 0, 0];
+                // Ensure settings structure
+                state.settings = { ...{ dailyLimit: 10 }, ...(parsed.settings || {}) };
             }
         }
 
@@ -2375,13 +2406,15 @@
             state.sessionCorrect = 0;
             state.sessionTotal = 0;
 
+            const dailyLimit = state.settings.dailyLimit || 10;
+
             // Get words based on mode
             if (mode === 'review') {
-                state.currentWords = getReviewQueue().slice(0, 10);
+                state.currentWords = getReviewQueue().slice(0, dailyLimit);
             } else {
                 const words = getAllWords().filter(w => w.status !== 'mastered');
-                // Shuffle and pick 10
-                state.currentWords = shuffleArray([...words]).slice(0, Math.min(10, words.length));
+                // Shuffle and pick based on daily limit
+                state.currentWords = shuffleArray([...words]).slice(0, Math.min(dailyLimit, words.length));
             }
 
             if (state.currentWords.length === 0) {
@@ -2940,9 +2973,30 @@
             }
         }
 
+        // ==================== DAILY LIMIT SETTINGS ====================
+        function updateDailyLimit(value) {
+            state.settings.dailyLimit = parseInt(value);
+            saveState();
+            
+            // Show feedback
+            const select = document.getElementById('daily-limit-select');
+            select.style.borderColor = 'var(--success)';
+            setTimeout(() => {
+                select.style.borderColor = '';
+            }, 500);
+        }
+
+        function initDailyLimitSelect() {
+            const select = document.getElementById('daily-limit-select');
+            if (select && state.settings && state.settings.dailyLimit) {
+                select.value = state.settings.dailyLimit.toString();
+            }
+        }
+
         // ==================== EVENT LISTENERS ====================
         document.addEventListener('DOMContentLoaded', () => {
             initTheme();
+            initDailyLimitSelect();
             updateDashboard();
             updateStatsScreen();
             renderVocabSelector();
