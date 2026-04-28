@@ -682,6 +682,17 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
+        
+        /* Danger Button - Clear in both themes */
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #DC2626);
+            color: white;
+            border: none;
+        }
+        
+        .btn-danger:hover {
+            filter: brightness(1.1);
+        }
 
         .word-info .word {
             font-weight: bold;
@@ -2519,7 +2530,7 @@
                     </div>
                 </div>
                 <div style="display:flex;gap:12px;margin-top:20px;">
-                    <button class="btn-primary" style="flex:1;padding:18px;font-size:1.1rem;background:var(--danger);" onclick="handleFlashcardResult(0)">❌ 不认识</button>
+                    <button class="btn-primary btn-danger" style="flex:1;padding:18px;font-size:1.1rem;" onclick="handleFlashcardResult(0)">❌ 不认识</button>
                     <button class="btn-primary" style="flex:1;padding:18px;font-size:1.1rem;" onclick="handleFlashcardResult(2)">✅ 认识</button>
                 </div>
             `;
@@ -2546,7 +2557,7 @@
                     </div>
                 </div>
                 <div style="display:flex;gap:12px;margin-top:20px;">
-                    <button class="btn-primary" style="flex:1;padding:18px;font-size:1.1rem;background:var(--danger);" onclick="handleFlashcardResult(0)">❌ 不认识</button>
+                    <button class="btn-primary btn-danger" style="flex:1;padding:18px;font-size:1.1rem;" onclick="handleFlashcardResult(0)">❌ 不认识</button>
                     <button class="btn-primary" style="flex:1;padding:18px;font-size:1.1rem;" onclick="handleFlashcardResult(2)">✅ 认识</button>
                 </div>
             `;
@@ -2874,71 +2885,92 @@
         }
 
         // ==================== WORD PRONUNCIATION ====================
-        function speakWord(word) {
+        // Preload voices - essential for mobile compatibility
+        let cachedVoices = [];
+        
+        function loadVoices() {
             if ('speechSynthesis' in window) {
-                // Cancel any ongoing speech
-                window.speechSynthesis.cancel();
-                
-                const utterance = new SpeechSynthesisUtterance(word);
-                utterance.lang = 'en-US';
-                utterance.rate = 0.85;
-                utterance.pitch = 1;
-                
-                // Get available voices
-                const voices = window.speechSynthesis.getVoices();
-                
-                // Priority: prefer high-quality US/UK English voices
-                // Exclude known non-standard voices
-                const excludedPatterns = ['India', 'Daniel', 'Oliver', 'Karen', 'Tamil', 'Telugu'];
-                
-                // Try to find the best English voice
-                let bestVoice = null;
-                
-                // First priority: en-US voices from Google or Microsoft (usually highest quality)
-                bestVoice = voices.find(v => 
-                    (v.lang === 'en-US' || v.lang.startsWith('en-US')) && 
-                    (v.name.includes('Google') || v.name.includes('Microsoft')) &&
-                    !excludedPatterns.some(p => v.name.includes(p))
-                );
-                
-                // Second priority: any en-US voice
-                if (!bestVoice) {
-                    bestVoice = voices.find(v => 
-                        (v.lang === 'en-US' || v.lang.startsWith('en-US')) &&
-                        !excludedPatterns.some(p => v.name.includes(p))
-                    );
+                cachedVoices = window.speechSynthesis.getVoices();
+                if (cachedVoices.length === 0) {
+                    // Some browsers need this event
+                    window.speechSynthesis.onvoiceschanged = () => {
+                        cachedVoices = window.speechSynthesis.getVoices();
+                    };
                 }
-                
-                // Third priority: en-GB voice (British English)
-                if (!bestVoice) {
-                    bestVoice = voices.find(v => 
-                        (v.lang === 'en-GB' || v.lang.startsWith('en-GB')) &&
-                        !excludedPatterns.some(p => v.name.includes(p))
-                    );
-                }
-                
-                // Fourth priority: any English voice
-                if (!bestVoice) {
-                    bestVoice = voices.find(v => 
-                        v.lang.startsWith('en') &&
-                        !excludedPatterns.some(p => v.name.includes(p))
-                    );
-                }
-                
-                if (bestVoice) {
-                    utterance.voice = bestVoice;
-                }
-                
-                window.speechSynthesis.speak(utterance);
             }
         }
-
-        // Preload voices
+        
+        // Load voices immediately and after a short delay (mobile workaround)
         if ('speechSynthesis' in window) {
-            window.speechSynthesis.getVoices();
-            window.speechSynthesis.onvoiceschanged = () => {
-                window.speechSynthesis.getVoices();
-            };
+            loadVoices();
+            setTimeout(loadVoices, 100);
+            setTimeout(loadVoices, 500);
+        }
+        
+        function speakWord(word) {
+            if ('speechSynthesis' in window) {
+                try {
+                    // Cancel any ongoing speech
+                    window.speechSynthesis.cancel();
+                    
+                    const utterance = new SpeechSynthesisUtterance(word);
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.85;
+                    utterance.pitch = 1;
+                    
+                    // Get voices - use cached if available, otherwise get fresh
+                    const voices = cachedVoices.length > 0 ? cachedVoices : window.speechSynthesis.getVoices();
+                    
+                    // Exclude known non-standard voices
+                    const excludedPatterns = ['India', 'Daniel', 'Oliver', 'Karen', 'Tamil', 'Telugu', 'Zira'];
+                    
+                    let bestVoice = null;
+                    
+                    // First: en-US Google/Microsoft
+                    bestVoice = voices.find(v => 
+                        (v.lang === 'en-US' || v.lang.startsWith('en-US')) && 
+                        (v.name.includes('Google') || v.name.includes('Microsoft')) &&
+                        !excludedPatterns.some(p => v.name.includes(p))
+                    );
+                    
+                    // Second: any en-US
+                    if (!bestVoice) {
+                        bestVoice = voices.find(v => 
+                            (v.lang === 'en-US' || v.lang.startsWith('en-US')) &&
+                            !excludedPatterns.some(p => v.name.includes(p))
+                        );
+                    }
+                    
+                    // Third: en-GB
+                    if (!bestVoice) {
+                        bestVoice = voices.find(v => 
+                            (v.lang === 'en-GB' || v.lang.startsWith('en-GB')) &&
+                            !excludedPatterns.some(p => v.name.includes(p))
+                        );
+                    }
+                    
+                    // Fourth: any English
+                    if (!bestVoice) {
+                        bestVoice = voices.find(v => 
+                            v.lang && v.lang.startsWith('en') &&
+                            !excludedPatterns.some(p => v.name.includes(p))
+                        );
+                    }
+                    
+                    // Fifth: use first available English voice if nothing else found
+                    if (!bestVoice && voices.length > 0) {
+                        bestVoice = voices[0];
+                    }
+                    
+                    if (bestVoice) {
+                        utterance.voice = bestVoice;
+                    }
+                    
+                    window.speechSynthesis.speak(utterance);
+                } catch(e) {
+                    console.log('Speech error:', e);
+                }
+            }
         }
 
 // ==================== THEME SWITCHER ====================
