@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+*.apk
+*.aab
+
+# Android build
+android/build/
+android/app/build/
+android/.gradle/
+android/local.properties
+
+# iOS build (if exists)
+ios/build/
+ios/Pods/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+
+# Capacitor
+capacitor.config.ts

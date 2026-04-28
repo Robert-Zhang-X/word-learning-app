@@ -1,0 +1,38 @@
+# 单词学习宝 - TXT导入样例
+# 格式：单词,释义,音标,例句（可选）
+# 每行一个单词，用英文逗号分隔
+
+# 基础词汇
+hello,你好,/həˈləʊ/,Hello! How are you?
+apple,苹果,/ˈæpl/,I eat an apple every day.
+book,书,/bʊk/,This is a good book.
+cat,猫,/kæt/,The cat is sleeping.
+dog,狗,/dɒɡ/,My dog is very cute.
+
+# 日常用语
+thank,谢谢,/θæŋk/,Thank you for your help.
+please,请,/pliːz/,Please sit down.
+sorry,对不起,/ˈsɒri/,I'm sorry for being late.
+excuse,打扰,/ɪkˈskjuːs/,Excuse me, where is the station?
+welcome,欢迎,/ˈwelkəm/,Welcome to our home!
+
+# 学习相关
+study,学习,/ˈstʌdi/,I study English every day.
+school,学校,/skuːl/,I go to school by bus.
+teacher,老师,/ˈtiːtʃə(r)/,My teacher is very kind.
+student,学生,/ˈstjuːdnt/,He is a good student.
+class,班级,/klɑːs/,Our class has 30 students.
+
+# 时间相关
+today,今天,/təˈdeɪ/,Today is Monday.
+tomorrow,明天,/təˈmɒrəʊ/,I will go there tomorrow.
+yesterday,昨天,/ˈjestədeɪ/,Yesterday was Sunday.
+morning,早上,/ˈmɔːnɪŋ/,Good morning!
+evening,晚上,/ˈiːvnɪŋ/,Good evening!
+
+# 颜色
+red,红色,/red/,The apple is red.
+blue,蓝色,/bluː/,The sky is blue.
+green,绿色,/ɡriːn/,Grass is green.
+yellow,黄色,/ˈjeləʊ/,The sun is yellow.
+black,黑色,/blæk/,He wears a black coat.
