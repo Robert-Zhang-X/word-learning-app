@@ -2966,39 +2966,53 @@
                 setTimeout(() => btn.style.transform = '', 300);
             });
             
-            // Stop any currently playing audio
+            // Stop any currently playing audio - force stop completely
             if (window.currentAudio) {
                 window.currentAudio.pause();
                 window.currentAudio.currentTime = 0;
+                window.currentAudio.src = '';  // Clear source to ensure stop
             }
             
-            // Method 1: Youdao TTS (国内可访问，可靠)
-            try {
-                const audio = new Audio();
-                // 有道翻译TTS - 美音 (type=0)
-                audio.src = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=0`;
-                audio.volume = 1.0;
-                
-                audio.oncanplaythrough = () => {
-                    audio.play().catch(e => {
-                        console.log('Youdao TTS play failed:', e);
+            // Also stop Web Speech API completely
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            
+            // Small delay to ensure previous audio is fully stopped
+            setTimeout(() => {
+                // Method 1: Youdao TTS (国内可访问，可靠)
+                try {
+                    const audio = new Audio();
+                    // 有道翻译TTS - 美音 (type=0)
+                    audio.src = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=0`;
+                    audio.volume = 1.0;
+                    
+                    audio.oncanplaythrough = () => {
+                        audio.play().catch(e => {
+                            console.log('Youdao TTS play failed:', e);
+                            tryWebSpeech(word);
+                        });
+                    };
+                    
+                    audio.onerror = (e) => {
+                        console.log('Youdao TTS load failed:', e);
                         tryWebSpeech(word);
-                    });
-                };
+                    };
+                    
+                    // Also stop any lingering audio when this one ends
+                    audio.onended = () => {
+                        audio.src = '';
+                    };
+                    
+                    window.currentAudio = audio;
+                    return;
+                } catch(e) {
+                    console.log('Youdao TTS error:', e);
+                }
                 
-                audio.onerror = (e) => {
-                    console.log('Youdao TTS load failed:', e);
-                    tryWebSpeech(word);
-                };
-                
-                window.currentAudio = audio;
-                return;
-            } catch(e) {
-                console.log('Youdao TTS error:', e);
-            }
-            
-            // Method 2: Web Speech API (fallback)
-            tryWebSpeech(word);
+                // Method 2: Web Speech API (fallback)
+                tryWebSpeech(word);
+            }, 50);
         }
         
         function tryWebSpeech(word) {
