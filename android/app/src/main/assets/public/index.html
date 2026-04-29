@@ -2969,67 +2969,47 @@
             // Stop any currently playing audio
             if (window.currentAudio) {
                 window.currentAudio.pause();
-                window.currentAudio = null;
+                window.currentAudio.currentTime = 0;
             }
             
-            // Method 1: Google Translate TTS (most reliable on mobile)
+            // Method 1: Youdao TTS (国内可访问，可靠)
             try {
                 const audio = new Audio();
-                // Google Translate TTS URL - works reliably on mobile
-                audio.src = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=en&client=tw-ob`;
+                // 有道翻译TTS - 美音 (type=0)
+                audio.src = `https://dict.youdao.com/dictvoice?audio=${encodeURIComponent(word)}&type=0`;
                 audio.volume = 1.0;
                 
                 audio.oncanplaythrough = () => {
                     audio.play().catch(e => {
-                        console.log('Google TTS play failed:', e);
-                        tryWebSpeech();
+                        console.log('Youdao TTS play failed:', e);
+                        tryWebSpeech(word);
                     });
                 };
                 
-                audio.onerror = () => {
-                    console.log('Google TTS load failed, trying Web Speech API');
-                    tryWebSpeech();
+                audio.onerror = (e) => {
+                    console.log('Youdao TTS load failed:', e);
+                    tryWebSpeech(word);
                 };
                 
                 window.currentAudio = audio;
                 return;
             } catch(e) {
-                console.log('Google TTS error:', e);
+                console.log('Youdao TTS error:', e);
             }
             
             // Method 2: Web Speech API (fallback)
-            tryWebSpeech();
+            tryWebSpeech(word);
         }
         
-        function tryWebSpeech() {
+        function tryWebSpeech(word) {
             if ('speechSynthesis' in window) {
                 try {
                     window.speechSynthesis.cancel();
                     
-                    const utterance = new SpeechSynthesisUtterance('');
+                    const utterance = new SpeechSynthesisUtterance(word);
                     utterance.lang = 'en-US';
                     utterance.rate = 0.85;
                     utterance.pitch = 1.0;
-                    utterance.volume = 1.0;
-                    
-                    // Get voices
-                    let voices = [];
-                    if (window.speechSynthesis.getVoices) {
-                        voices = window.speechSynthesis.getVoices();
-                    }
-                    
-                    // Find best English voice
-                    let selectedVoice = null;
-                    if (voices.length > 0) {
-                        selectedVoice = voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) ||
-                                       voices.find(v => v.lang === 'en-US' && v.name.includes('Microsoft')) ||
-                                       voices.find(v => v.lang === 'en-US') ||
-                                       voices.find(v => v.lang && v.lang.startsWith('en'));
-                    }
-                    
-                    if (selectedVoice) {
-                        utterance.voice = selectedVoice;
-                    }
                     
                     window.speechSynthesis.speak(utterance);
                 } catch(e) {
