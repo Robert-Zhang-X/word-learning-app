@@ -2966,67 +2966,75 @@
                 setTimeout(() => btn.style.transform = '', 300);
             });
             
-            // Use Web Speech API
+            // Stop any currently playing audio
+            if (window.currentAudio) {
+                window.currentAudio.pause();
+                window.currentAudio = null;
+            }
+            
+            // Method 1: Google Translate TTS (most reliable on mobile)
+            try {
+                const audio = new Audio();
+                // Google Translate TTS URL - works reliably on mobile
+                audio.src = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(word)}&tl=en&client=tw-ob`;
+                audio.volume = 1.0;
+                
+                audio.oncanplaythrough = () => {
+                    audio.play().catch(e => {
+                        console.log('Google TTS play failed:', e);
+                        tryWebSpeech();
+                    });
+                };
+                
+                audio.onerror = () => {
+                    console.log('Google TTS load failed, trying Web Speech API');
+                    tryWebSpeech();
+                };
+                
+                window.currentAudio = audio;
+                return;
+            } catch(e) {
+                console.log('Google TTS error:', e);
+            }
+            
+            // Method 2: Web Speech API (fallback)
+            tryWebSpeech();
+        }
+        
+        function tryWebSpeech() {
             if ('speechSynthesis' in window) {
                 try {
                     window.speechSynthesis.cancel();
                     
-                    const utterance = new SpeechSynthesisUtterance(word);
+                    const utterance = new SpeechSynthesisUtterance('');
                     utterance.lang = 'en-US';
-                    utterance.rate = 0.9;
+                    utterance.rate = 0.85;
                     utterance.pitch = 1.0;
                     utterance.volume = 1.0;
                     
-                    // Get voices - try cached first, then fresh
-                    const voices = cachedVoices.length > 0 ? cachedVoices : window.speechSynthesis.getVoices();
+                    // Get voices
+                    let voices = [];
+                    if (window.speechSynthesis.getVoices) {
+                        voices = window.speechSynthesis.getVoices();
+                    }
                     
                     // Find best English voice
                     let selectedVoice = null;
-                    
-                    // Priority 1: en-US Google
-                    selectedVoice = voices.find(v => v.lang === 'en-US' && v.name.includes('Google'));
-                    // Priority 2: en-US Microsoft
-                    if (!selectedVoice) selectedVoice = voices.find(v => v.lang === 'en-US' && v.name.includes('Microsoft'));
-                    // Priority 3: Any en-US
-                    if (!selectedVoice) selectedVoice = voices.find(v => v.lang === 'en-US');
-                    // Priority 4: en-GB
-                    if (!selectedVoice) selectedVoice = voices.find(v => v.lang && v.lang.startsWith('en-GB'));
-                    // Priority 5: Any English
-                    if (!selectedVoice) selectedVoice = voices.find(v => v.lang && v.lang.startsWith('en'));
-                    // Priority 6: First available
-                    if (!selectedVoice && voices.length > 0) selectedVoice = voices[0];
+                    if (voices.length > 0) {
+                        selectedVoice = voices.find(v => v.lang === 'en-US' && v.name.includes('Google')) ||
+                                       voices.find(v => v.lang === 'en-US' && v.name.includes('Microsoft')) ||
+                                       voices.find(v => v.lang === 'en-US') ||
+                                       voices.find(v => v.lang && v.lang.startsWith('en'));
+                    }
                     
                     if (selectedVoice) {
                         utterance.voice = selectedVoice;
                     }
                     
-                    // Error handling
-                    utterance.onerror = (e) => {
-                        console.log('Speech error:', e);
-                    };
-                    
-                    utterance.onend = () => {
-                        console.log('Speech finished');
-                    };
-                    
                     window.speechSynthesis.speak(utterance);
-                    return;
                 } catch(e) {
-                    console.log('Speech API error:', e);
+                    console.log('Web Speech API failed:', e);
                 }
-            }
-            
-            // Fallback: Use TTSMP3 (CORS-friendly)
-            try {
-                const audio = new Audio();
-                audio.src = `https://ttsmp3.com/mp3loaded/${encodeURIComponent(word)}.mp3`;
-                audio.play().catch(() => {
-                    // Second fallback
-                    audio.src = `https://api.voicerss.org/?key=demo&hl=en-us&src=${encodeURIComponent(word)}`;
-                    audio.play().catch(e => console.log('All TTS methods failed'));
-                });
-            } catch(e) {
-                console.log('TTS fallback failed:', e);
             }
         }
 
