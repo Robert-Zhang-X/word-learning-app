@@ -70,9 +70,14 @@
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
+            min-height: 100dvh; /* 动态视口高度，支持全面屏 */
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             transition: background 0.3s ease, color 0.3s ease;
+            /* 全面屏适配 - 顶部安全区域 */
+            padding-top: env(safe-area-inset-top);
+            /* 全面屏适配 - 底部安全区域 */
+            padding-bottom: env(safe-area-inset-bottom);
         }
 
         /* Header - Modern Minimalist Style */
@@ -80,6 +85,7 @@
             background: var(--primary);
             color: white;
             padding: 16px 20px 24px;
+            padding-top: calc(16px + env(safe-area-inset-top)); /* 顶部安全区域 */
             position: relative;
             border-radius: 0 0 20px 20px;
             box-shadow: var(--shadow-lg);
@@ -153,7 +159,7 @@
         .container {
             max-width: 480px;
             margin: 0 auto;
-            padding: 16px 16px 120px;
+            padding: 16px 16px calc(120px + env(safe-area-inset-bottom));
             position: relative;
             z-index: 10;
         }
