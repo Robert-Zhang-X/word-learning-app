@@ -1,0 +1,173 @@
+// ============================================================
+// 词库数据 - 职场/商务/会议英语
+// ============================================================
+
+const WORD_DATABASE = {
+  // --- 日常办公 ---
+  office: [
+    { word: "schedule", phonetic: "/ʃɛdjuːl/", meaning: "日程安排 n.", example: "Could you send me the updated schedule for this week?", example_cn: "能把本周更新后的日程表发给我吗？" },
+    { word: "deadline", phonetic: "/dɛdlaɪn/", meaning: "截止日期 n.", example: "The deadline for the report is Friday afternoon.", example_cn: "报告的截止日期是周五下午。" },
+    { word: "feedback", phonetic: "/fiːdbæk/", meaning: "反馈 n./v.", example: "I appreciate your feedback on my presentation.", example_cn: "非常感谢你对我的演示提出的反馈。" },
+    { word: "approve", phonetic: "/əpruːv/", meaning: "批准 v.", example: "The budget needs to be approved by the CFO.", example_cn: "预算需要首席财务官批准。" },
+    { word: "priority", phonetic: "/praɪɒrəti/", meaning: "优先事项 n.", example: "Customer satisfaction is our top priority.", example_cn: "客户满意度是我们的首要优先事项。" },
+    { word: "delegate", phonetic: "/dɛlɪɡeɪt/", meaning: "委托/授权 v.", example: "We need to delegate tasks more efficiently.", example_cn: "我们需要更高效地分配任务。" },
+    { word: "escalate", phonetic: "/ɛskəleɪt/", meaning: "升级 v.", example: "If the issue cannot be resolved, we will escalate to management.", example_cn: "如果问题无法解决，我们将上报管理层。" },
+    { word: "stakeholder", phonetic: "/steɪkhoʊldər/", meaning: "利益相关方 n.", example: "All stakeholders should be informed before the decision is made.", example_cn: "在做出决定之前，所有利益相关方都应被告知。" },
+    { word: "action item", phonetic: "/ækʃən aɪtəm/", meaning: "待办事项 n.", example: "Let me summarize the key action items from today's meeting.", example_cn: "让我总结一下今天会议的关键待办事项。" },
+    { word: "follow up", phonetic: "/fɒloʊ ʌp/", meaning: "跟进 v.", example: "I will follow up with the vendor tomorrow.", example_cn: "我明天会跟进供应商的情况。" },
+    { word: "bypass", phonetic: "/baɪpæs/", meaning: "绕过 v.", example: "We should not bypass the standard approval process.", example_cn: "我们不应该绕过标准的审批流程。" },
+    { word: "onboard", phonetic: "/ɒnbɔːrd/", meaning: "入职培训 v.", example: "HR will handle the onboarding process for new hires.", example_cn: "人力资源部将负责新员工的入职流程。" },
+    { word: "workflow", phonetic: "/wɜːrkfloʊ/", meaning: "工作流程 n.", example: "The new workflow has significantly improved our efficiency.", example_cn: "新的工作流程显著提高了我们的效率。" },
+    { word: "milestone", phonetic: "/maɪlstoʊn/", meaning: "里程碑 n.", example: "Reaching 10,000 users is a major milestone for us.", example_cn: "用户数达到1万是我们公司的一个重大里程碑。" },
+    { word: "reconcile", phonetic: "/rɛkənsaɪl/", meaning: "协调/对账 v.", example: "We need to reconcile the accounts before the end of the quarter.", example_cn: "我们需要在季度末之前核对账目。" },
+    { word: "benchmark", phonetic: "/bɛntʃmɑːrk/", meaning: "基准 v./n.", example: "This project will serve as a benchmark for future initiatives.", example_cn: "这个项目将成为未来举措的基准。" },
+    { word: "streamline", phonetic: "/striːmlaɪn/", meaning: "精简 v.", example: "We are looking for ways to streamline the approval process.", example_cn: "我们正在寻找精简审批流程的方法。" },
+    { word: "allocate", phonetic: "/æləkeɪt/", meaning: "分配 v.", example: "We need to allocate more resources to this project.", example_cn: "我们需要为这个项目分配更多资源。" },
+    { word: "collaborate", phonetic: "/kəlæbəreɪt/", meaning: "合作 v.", example: "The two departments need to collaborate more closely.", example_cn: "这两个部门需要更紧密地合作。" },
+    { word: "consensus", phonetic: "/kənsɛnsəs/", meaning: "共识 n.", example: "It took hours to reach a consensus on the final plan.", example_cn: "就最终方案达成共识花了我们好几个小时。" },
+    { word: "proactive", phonetic: "/proʊæktɪv/", meaning: "主动的 adj.", example: "We should take a proactive approach to risk management.", example_cn: "我们应该采取积极主动的风险管理方法。" },
+    { word: "initiative", phonetic: "/ɪnɪʃətɪv/", meaning: "倡议/主动权 n.", example: "This is a great initiative to improve team communication.", example_cn: "这是一个改善团队沟通的好倡议。" },
+    { word: "tangible", phonetic: "/tændʒɪbəl/", meaning: "有形的/实际的 adj.", example: "We need to show tangible results to the stakeholders.", example_cn: "我们需要向利益相关方展示实际成果。" },
+    { word: "scalable", phonetic: "/skeɪləbəl/", meaning: "可扩展的 adj.", example: "The solution needs to be scalable for future growth.", example_cn: "该解决方案需要能够适应未来的增长。" },
+    { word: "incentivize", phonetic: "/ɪnsɛntɪvaɪz/", meaning: "激励 v.", example: "How can we incentivize the team to meet this target?", example_cn: "我们如何激励团队达到这个目标？" },
+    { word: "bandwidth", phonetic: "/bændwɪdθ/", meaning: "（可用）能力/带宽 n.", example: "I don't have the bandwidth to take on another project right now.", example_cn: "我现在没有精力再接另一个项目了。" },
+    { word: "synergy", phonetic: "/sɪnərdʒi/", meaning: "协同效应 n.", example: "The merger will create significant synergies.", example_cn: "这次合并将产生显著的协同效应。" },
+    { word: "pipeline", phonetic: "/paɪplaɪn/", meaning: "待处理事项/管道 n.", example: "We have several promising deals in the pipeline.", example_cn: "我们有几个有望达成的交易正在推进中。" },
+    { word: "touch base", phonetic: "/tʌtʃ beɪs/", meaning: "联系/碰头 v.", example: "Let's touch base next Monday to review progress.", example_cn: "我们下周一碰一下头，审查进展。" },
+    { word: "low-hanging fruit", phonetic: "/loʊ hæŋɪŋ fruːt/", meaning: "容易取得的成果 n.", example: "Let's focus on the low-hanging fruit first to show quick wins.", example_cn: "让我们先专注最容易取得的成果以展示快速成效。" },
+    { word: "drill down", phonetic: "/drɪl daʊn/", meaning: "深入分析 v.", example: "We need to drill down into the data to find the root cause.", example_cn: "我们需要深入分析数据以找到根本原因。" },
+    { word: "circle back", phonetic: "/sɜːrkəl bæk/", meaning: "回头再说 v.", example: "Let's circle back on this topic after the break.", example_cn: "休息之后我们再回头讨论这个话题。" },
+    { word: "take offline", phonetic: "/teɪk ɒflaɪn/", meaning: "私下讨论 v.", example: "This is a sensitive issue; let's take it offline.", example_cn: "这是个敏感问题，我们私下讨论吧。" },
+    { word: "optics", phonetic: "/ɒptɪks/", meaning: "（公众）形象 n.", example: "We need to be careful about the optics of this decision.", example_cn: "我们需要谨慎对待这个决定带来的形象问题。" },
+    { word: "unpack", phonetic: "/ʌnpæk/", meaning: "详细分析 v.", example: "Let me unpack the key findings from the report.", example_cn: "让我详细分析一下报告的主要发现。" },
+    { word: "pain point", phonetic: "/peɪn pɔɪnt/", meaning: "痛点 n.", example: "Understanding customer pain points is crucial for product design.", example_cn: "了解客户痛点对产品设计至关重要。" },
+    { word: "core competency", phonetic: "/kɔːr kəmpɛtənsi/", meaning: "核心竞争力 n.", example: "Innovation is our core competency.", example_cn: "创新是我们的核心竞争力。" },
+    { word: "buy-in", phonetic: "/baɪ ɪn/", meaning: "认同 n.", example: "We need executive buy-in before proceeding.", example_cn: "在继续之前，我们需要高管层的认同。" },
+    { word: "move the needle", phonetic: "/muːv ðə niːdəl/", meaning: "产生显著影响 v.", example: "This initiative will really move the needle on sales.", example_cn: "这个举措将对销售产生显著影响。" },
+  ],
+  // --- 口语交流 ---
+  oral: [
+    { word: "Honestly", phonetic: "/ɒnɪstli/", meaning: "老实说", example: "Honestly, I'm not sure that's the best approach.", example_cn: "老实说，我不确定这是最好的方法。" },
+    { word: "That makes sense", phonetic: "/ðæt meɪks sɛns/", meaning: "有道理", example: "That makes sense. I'll revise the proposal accordingly.", example_cn: "有道理，我会相应修改提案。" },
+    { word: "To be honest", phonetic: "/tuː biː ɒnɪst/", meaning: "说实话", example: "To be honest, I was a bit surprised by the outcome.", example_cn: "说实话，我对结果有点惊讶。" },
+    { word: "In my experience", phonetic: "/ɪn maɪ ɪkspɪəriəns/", meaning: "根据我的经验", example: "In my experience, this method tends to work better.", example_cn: "根据我的经验，这种方法往往效果更好。" },
+    { word: "That said", phonetic: "/ðæt sɛd/", meaning: "话虽如此", example: "The project is behind schedule. That said, we can still meet the deadline.", example_cn: "项目进度落后了。话虽如此，我们仍能按期完成。" },
+    { word: "Bottom line", phonetic: "/bɒtəm laɪn/", meaning: "底线/结论 n.", example: "The bottom line is we need more funding to proceed.", example_cn: "底线是我们需要更多资金才能继续。" },
+    { word: "Fair enough", phonetic: "/feər ɪnʌf/", meaning: "说得合理", example: "Fair enough. I can see your point.", example_cn: "说得合理，我能理解你的观点。" },
+    { word: "No worries", phonetic: "/noʊ wɜːriz/", meaning: "没关系", example: "No worries at all. These things happen.", example_cn: "完全没关系，这种事难免会发生。" },
+    { word: "Get back to you", phonetic: "/ɡɛt bæk tuː juː/", meaning: "稍后回复你", example: "I need to check with my team. I'll get back to you by tomorrow.", example_cn: "我需要和团队确认一下，明天回复你。" },
+    { word: "Sounds good to me", phonetic: "/saʊndz ɡʊd tuː miː/", meaning: "我觉得不错", example: "Sounds good to me. Let's proceed with plan A.", example_cn: "我觉得不错，我们就按方案A执行吧。" },
+    { word: "Out of curiosity", phonetic: "/aʊt əv kjʊəriɒsɪti/", meaning: "出于好奇", example: "Out of curiosity, how long have you been working here?", example_cn: "出于好奇，你在这里工作多久了？" },
+    { word: "Not to mention", phonetic: "/nɒt tuː mɛnʃən/", meaning: "更别提", example: "The project is behind schedule, not to mention over budget.", example_cn: "项目进度落后，更别提超出预算了。" },
+    { word: "To cut a long story short", phonetic: "/tuː kʌt ə lɒŋ stɔːri ʃɔːrt/", meaning: "长话短说", example: "To cut a long story short, we decided to go with option B.", example_cn: "长话短说，我们决定选择方案B。" },
+    { word: "The way I see it", phonetic: "/ðə weɪ aɪ siː ɪt/", meaning: "依我看", example: "The way I see it, we should prioritize the customer experience.", example_cn: "依我看，我们应该优先考虑客户体验。" },
+    { word: "At the end of the day", phonetic: "/æt ðə ɛnd əv ðə deɪ/", meaning: "归根结底", example: "At the end of the day, customer satisfaction is what matters most.", example_cn: "归根结底，客户满意度才是最重要的。" },
+    { word: "For what it's worth", phonetic: "/fɔːr wɒt ɪts wɜːrθ/", meaning: "仅供你参考", example: "For what it's worth, I think you're handling this really well.", example_cn: "仅供你参考，我觉得你处理得很好。" },
+    { word: "I see where you're coming from", phonetic: "/aɪ siː weər jɔːr kʌmɪŋ frɒm/", meaning: "我理解你的立场", example: "I see where you're coming from, but we have different constraints.", example_cn: "我理解你的立场，但我们面临不同的限制。" },
+    { word: "Take it with a grain of salt", phonetic: "/teɪk ɪt wɪð ə ɡreɪn əv sɔːlt/", meaning: "半信半疑", example: "Take this forecast with a grain of salt; the market is unpredictable.", example_cn: "对这个预测要持保留态度，市场变幻莫测。" },
+    { word: "Between you and me", phonetic: "/bɪtwiːn juː ænd miː/", meaning: "私下告诉你", example: "Between you and me, I think we might need to change the strategy.", example_cn: "私下告诉你，我觉得我们可能需要改变策略。" },
+    { word: "Up in the air", phonetic: "/ʌp ɪn ðə eər/", meaning: "悬而未决", example: "The date for the launch is still up in the air.", example_cn: "发布日期目前还悬而未决。" },
+    { word: "On the same page", phonetic: "/ɒn ðə seɪm peɪdʒ/", meaning: "达成共识", example: "Let's make sure everyone's on the same page before we start.", example_cn: "在我们开始之前，先确保大家达成共识。" },
+    { word: "Think outside the box", phonetic: "/θɪŋk aʊtzaɪd ðə bɒks/", meaning: "跳出框框思考", example: "We need to think outside the box to solve this problem.", example_cn: "我们需要跳出框框来思考解决这个问题。" },
+    { word: "Play devil's advocate", phonetic: "/pleɪ dɛvəlz ædvəkət/", meaning: "扮演反对者角色", example: "Let me play devil's advocate and challenge this assumption.", example_cn: "让我扮演反对者，来挑战这个假设。" },
+    { word: "Back to the drawing board", phonetic: "/bæk tuː ðə drɔːɪŋ bɔːrd/", meaning: "从头再来", example: "The prototype failed, so it's back to the drawing board.", example_cn: "原型失败了，所以我们得从头再来。" },
+    { word: "Run it up the flagpole", phonetic: "/rʌn ɪt ʌp ðə flæɡpoʊl/", meaning: "试探一下（意见）", example: "Let me run this idea up the flagpole with the team.", example_cn: "让我把这个想法在团队里试探一下。" },
+  ],
+  // --- 商务谈判 ---
+  negotiation: [
+    { word: "proposal", phonetic: "/prəpoʊzəl/", meaning: "提案/建议书 n.", example: "We've prepared a comprehensive proposal for your review.", example_cn: "我们已经准备了一份综合提案供您审阅。" },
+    { word: "counteroffer", phonetic: "/kaʊntərɒfər/", meaning: "还价/反提案 n.", example: "We cannot accept the price, but we can make a counteroffer.", example_cn: "我们无法接受这个价格，但我们可以还价。" },
+    { word: "terms and conditions", phonetic: "/tɜːrmz ænd kəndɪʃənz/", meaning: "条款与条件 n.", example: "Please review the terms and conditions carefully before signing.", example_cn: "请在签署前仔细审阅条款与条件。" },
+    { word: "negotiate", phonetic: "/nɪɡoʊʃieɪt/", meaning: "谈判 v.", example: "We need to negotiate a better price with our suppliers.", example_cn: "我们需要与供应商谈判一个更好的价格。" },
+    { word: "compromise", phonetic: "/kɒmprəmaɪz/", meaning: "妥协 n./v.", example: "Both parties need to reach a compromise to close the deal.", example_cn: "双方需要达成妥协才能完成交易。" },
+    { word: "leverage", phonetic: "/lɛvərɪdʒ/", meaning: "杠杆/影响力 n./v.", example: "We can use our market position as leverage in negotiations.", example_cn: "我们可以用市场地位作为谈判筹码。" },
+    { word: "due diligence", phonetic: "/duː daɪlɪdʒəns/", meaning: "尽职调查 n.", example: "Due diligence is required before finalizing the acquisition.", example_cn: "在完成收购之前需要进行尽职调查。" },
+    { word: "win-win", phonetic: "/wɪn wɪn/", meaning: "双赢 adj.", example: "We're looking for a win-win solution for both sides.", example_cn: "我们寻求对双方都双赢的解决方案。" },
+    { word: "bottom line", phonetic: "/bɒtəm laɪn/", meaning: "底线 n.", example: "What's your bottom line on this deal?", example_cn: "这个交易的底线是什么？" },
+    { word: "walk away", phonetic: "/wɔːk əweɪ/", meaning: "放弃/离开 v.", example: "If the price doesn't come down, we'll have to walk away.", example_cn: "如果价格不降下来，我们只能放弃。" },
+    { word: "sign off", phonetic: "/saɪn ɒf/", meaning: "签字批准 v.", example: "The contract needs to be signed off by legal by Friday.", example_cn: "合同需要在周五前获得法务签字批准。" },
+    { word: "break the ice", phonetic: "/breɪk ðə aɪs/", meaning: "打破僵局", example: "Let's start with a small talk to break the ice.", example_cn: "我们先用闲聊来打破僵局吧。" },
+    { word: "red line", phonetic: "/rɛd laɪn/", meaning: "红线/底线 n.", example: "Price is our red line; we cannot go below this figure.", example_cn: "价格是我们的红线，不能低于这个数字。" },
+    { word: "sweeten the deal", phonetic: "/swiːtən ðə diːl/", meaning: "为交易增加筹码", example: "To sweeten the deal, we can offer extended warranty.", example_cn: "为了增加筹码，我们可以提供延保服务。" },
+    { word: "ballpark figure", phonetic: "/bɔːlpɑːrk fɪɡjər/", meaning: "大概的数字 n.", example: "Can you give me a ballpark figure for the project cost?", example_cn: "你能给我一个项目成本的大概数字吗？" },
+    { word: "put on the table", phonetic: "/pʊt ɒn ðə teɪbəl/", meaning: "摆到桌面上", example: "Let's put all the options on the table and discuss them.", example_cn: "让我们把所有选项都摆到桌面上来讨论。" },
+    { word: "close the deal", phonetic: "/kloʊz ðə diːl/", meaning: "完成交易", example: "We're very close to closing the deal.", example_cn: "我们离完成交易非常接近了。" },
+    { word: "mutually beneficial", phonetic: "/mjuːtʃuəli bɛnɪfɪʃəl/", meaning: "互惠互利的 adj.", example: "We aim to establish a mutually beneficial partnership.", example_cn: "我们的目标是建立互惠互利的合作关系。" },
+    { word: "letter of intent", phonetic: "/lɛtər əv ɪntɛnt/", meaning: "意向书 n.", example: "We should draft a letter of intent before proceeding.", example_cn: "在继续之前，我们应该起草一份意向书。" },
+    { word: "binding", phonetic: "/baɪndɪŋ/", meaning: "有约束力的 adj.", example: "This agreement is legally binding for both parties.", example_cn: "该协议对双方都具有法律约束力。" },
+    { word: "non-disclosure agreement", phonetic: "/nɒn dɪskloʊʒər əɡriːmənt/", meaning: "保密协议 n.", example: "Please sign the NDA before we discuss proprietary details.", example_cn: "在我们讨论专有细节之前，请签署保密协议。" },
+    { word: "profit margin", phonetic: "/prɒfɪt mɑːrdʒɪn/", meaning: "利润率 n.", example: "We need to improve our profit margins by at least 10%.", example_cn: "我们需要将利润率提高至少10%。" },
+    { word: " ROI ", phonetic: "/ɑːr oʊ aɪ/", meaning: "投资回报率 n.", example: "What's the expected ROI for this marketing campaign?", example_cn: "这次营销活动的预期投资回报率是多少？" },
+    { word: "in the black", phonetic: "/ɪn ðə blæk/", meaning: "盈利", example: "The company has been in the black for three consecutive years.", example_cn: "公司已经连续三年盈利了。" },
+    { word: "cash flow", phonetic: "/kæʃ floʊ/", meaning: "现金流 n.", example: "We need to improve our cash flow management.", example_cn: "我们需要改善现金流管理。" },
+  ],
+  // --- 英文会议 ---
+  meeting: [
+    { word: "agenda", phonetic: "/ədʒɛndə/", meaning: "议程 n.", example: "Let's review the agenda for today's meeting.", example_cn: "让我们回顾一下今天会议的议程。" },
+    { word: "minutes", phonetic: "/mɪnɪts/", meaning: "会议记录 n.", example: "Who will take the minutes during the meeting?", example_cn: "会议期间谁来做记录？" },
+    { word: "adjourn", phonetic: "/ədʒɜːrn/", meaning: "休会 v.", example: "Shall we adjourn the meeting until next week?", example_cn: "我们把会议推迟到下周好吗？" },
+    { word: "chairperson", phonetic: "/tʃeərpɜːrsən/", meaning: "主持人 n.", example: "The chairperson will guide us through the agenda items.", example_cn: "主持人将引导我们完成议程项目。" },
+    { word: "quorum", phonetic: "/kwɔːrəm/", meaning: "法定人数 n.", example: "We need a quorum to proceed with the vote.", example_cn: "我们需要法定人数才能进行投票。" },
+    { word: "brainstorm", phonetic: "/breɪnstɔːrm/", meaning: "头脑风暴 v.", example: "Let's brainstorm some ideas for the new campaign.", example_cn: "让我们为新活动进行头脑风暴。" },
+    { word: "wrap up", phonetic: "/ræp ʌp/", meaning: "总结/结束 v.", example: "Let's wrap up the discussion and summarize key decisions.", example_cn: "让我们结束讨论并总结关键决定。" },
+    { word: "take the floor", phonetic: "/teɪk ðə flɔːr/", meaning: "发言", example: "Now I'd like to take the floor to present my findings.", example_cn: "现在我想发言，介绍我的发现。" },
+    { word: "raise a point", phonetic: "/reɪz ə pɔɪnt/", meaning: "提出观点", example: "I'd like to raise a point about the timeline.", example_cn: "我想提出一个关于时间线的问题。" },
+    { word: "play devil's advocate", phonetic: "/pleɪ dɛvəlz ædvəkət/", meaning: "唱反调", example: "Let me play devil's advocate here.", example_cn: "让我在这里唱个反调。" },
+    { word: "draw to a close", phonetic: "/drɔː tuː ə kloʊz/", meaning: "接近尾声", example: "Our discussion is drawing to a close.", example_cn: "我们的讨论接近尾声了。" },
+    { word: "stand in solidarity", phonetic: "/stænd ɪn sɒlɪdærɪti/", meaning: "表示支持", example: "I stand in solidarity with the proposed changes.", example_cn: "我支持这些提议的变更。" },
+    { word: "table this", phonetic: "/teɪbəl ðɪs/", meaning: "搁置讨论", example: "Let's table this issue for the next meeting.", example_cn: "让我们把这个议题搁置到下次会议。" },
+    { word: "point of order", phonetic: "/pɔɪnt əv ɔːrdər/", meaning: "程序问题", example: "I'd like to raise a point of order.", example_cn: "我想提出一个程序问题。" },
+    { word: "consensus", phonetic: "/kənsɛnsəs/", meaning: "共识 n.", example: "Can we reach a consensus on this matter?", example_cn: "我们能在这件事上达成共识吗？" },
+    { word: "move a motion", phonetic: "/muːv ə moʊʃən/", meaning: "提出动议", example: "I would like to move a motion to approve the budget.", example_cn: "我想提出一项批准预算的动议。" },
+    { word: "abstain", phonetic: "/əbsteɪn/", meaning: "弃权 v.", example: "I would like to abstain from this vote.", example_cn: "我想在这场投票中弃权。" },
+    { word: "stake out a position", phonetic: "/steɪk aʊt ə pəzɪʃən/", meaning: "表明立场", example: "Let me stake out my position on this proposal.", example_cn: "让我来表明我对这个提案的立场。" },
+    { word: "open the floor", phonetic: "/oʊpən ðə flɔːr/", meaning: "开放讨论", example: "Now I'll open the floor for questions.", example_cn: "现在我开放讨论，欢迎提问。" },
+    { word: "follow up", phonetic: "/fɒloʊ ʌp/", meaning: "跟进 v.", example: "I'll follow up on the action items after the meeting.", example_cn: "会议结束后我会跟进待办事项。" },
+    { word: "going forward", phonetic: "/ɡoʊɪŋ fɔːrwərd/", meaning: "今后", example: "Going forward, we should have weekly check-ins.", example_cn: "今后，我们应该每周碰头一次。" },
+    { word: "in sync", phonetic: "/ɪn sɪŋk/", meaning: "同步 adj.", example: "Let's make sure everyone stays in sync throughout the project.", example_cn: "让我们确保整个项目中每个人都保持同步。" },
+    { word: "dive in", phonetic: "/daɪv ɪn/", meaning: "深入讨论", example: "Let's dive in and start with the first agenda item.", example_cn: "让我们深入讨论，从第一个议程开始。" },
+    { word: "park that", phonetic: "/pɑːrk ðæt/", meaning: "暂时搁置", example: "Let's park that discussion for now and move on.", example_cn: "让我们先搁置那个讨论，继续下一个议题。" },
+    { word: "keep us on track", phonetic: "/kiːp ʌs ɒn træk/", meaning: "确保不跑题", example: "We need to keep this meeting on track.", example_cn: "我们需要确保这次会议不跑题。" },
+    { word: "action points", phonetic: "/ækʃən pɔɪnts/", meaning: "行动要点 n.", example: "Let me recap the action points from today's meeting.", example_cn: "让我回顾一下今天会议的行动要点。" },
+    { word: "in the pipeline", phonetic: "/ɪn ðə paɪplaɪn/", meaning: "即将到来", example: "We have several exciting projects in the pipeline.", example_cn: "我们有几个令人兴奋的项目即将启动。" },
+  ]
+};
+
+// ============================================================
+// 语法题库 - 时态与语态
+// ============================================================
+
+const GRAMMAR_QUESTIONS = [
+  // 现在时态
+  { category: "时态", subcategory: "现在进行时", question: "She ___ a report right now.", options: ["writes", "is writing", "wrote", "has written"], answer: 1, explanation: "现在进行时表示说话瞬间正在发生的动作，用 be + doing。" },
+  { category: "时态", subcategory: "一般现在时", question: "Water ___ at 100°C.", options: ["boils", "is boiling", "boiled", "has boiled"], answer: 0, explanation: "一般现在时表示客观事实、自然规律或普遍真理。" },
+  { category: "时态", subcategory: "现在完成时", question: "I ___ this book three times.", options: ["read", "am reading", "have read", "has read"], answer: 2, explanation: "现在完成时表示过去发生的行为对现在有影响，或经验。" },
+  { category: "时态", subcategory: "现在完成进行时", question: "It ___ all day. We need indoor activities.", options: ["rains", "is raining", "has been raining", "rained"], answer: 2, explanation: "现在完成进行时强调动作持续进行且可能延续到现在。" },
+
+  // 过去时态
+  { category: "时态", subcategory: "一般过去时", question: "When ___ you last see him?", options: ["do", "did", "have", "has"], answer: 1, explanation: "一般过去时表示过去某个特定时间发生的动作。" },
+  { category: "时态", subcategory: "过去进行时", question: "I ___ dinner when the phone rang.", options: ["had", "was having", "am having", "have had"], answer: 1, explanation: "过去进行时表示在过去某一时刻正在进行的动作。" },
+  { category: "时态", subcategory: "过去完成时", question: "By the time I arrived, the meeting ___ already ___.", options: ["has / started", "had / started", "was / starting", "did / start"], answer: 1, explanation: "过去完成时表示在过去某一时间之前已经完成的动作。" },
+  { category: "时态", subcategory: "过去完成时", question: "She realized she ___ her keys at home.", options: ["left", "had left", "has left", "was leaving"], answer: 1, explanation: "过去完成时用于过去时的宾语从句中，表示先于主句发生的动作。" },
+
+  // 将来时态
+  { category: "时态", subcategory: "一般将来时", question: "The meeting ___ at 3 PM tomorrow.", options: ["starts", "is starting", "will start", "has started"], answer: 2, explanation: "一般将来时表示将来发生的动作，will + 动词原形。" },
+  { category: "时态", subcategory: "将来进行时", question: "This time tomorrow, I ___ in Tokyo.", options: ["will work", "will be working", "am working", "work"], answer: 1, explanation: "将来进行时表示将来某一时刻正在进行的动作。" },
+  { category: "时态", subcategory: "将来完成时", question: "By 2030, AI ___ many jobs.", options: ["will change", "will have changed", "has changed", "would change"], answer: 1, explanation: "将来完成时表示到将来某一时间已完成的动作。" },
+
+  // 被动语态
+  { category: "语态", subcategory: "一般现在时被动", question: "The report ___ by the manager.", options: ["is approved", "approves", "approved", "has approved"], answer: 0, explanation: "一般现在时被动：am/is/are + 过去分词。" },
+  { category: "语态", subcategory: "一般过去时被动", question: "The project ___ last month.", options: ["completes", "is completed", "was completed", "has completed"], answer: 2, explanation: "一般过去时被动：was/were + 过去分词。" },
+  { category: "语态", subcategory: "现在完成时被动", question: "The work ___ ahead of schedule.", options: ["has finished", "has been finished", "is finishing", "was finished"], answer: 1, explanation: "现在完成时被动：has/have been + 过去分词。" },
+  { category: "语态", subcategory: "情态动词被动", question: "This issue must ___ immediately.", options: ["handle", "handles", "is handled", "be handled"], answer: 3, explanation: "情态动词被动：情态动词 + be + 过去分词。" },
+  { category: "语态", subcategory: "将来时被动", question: "The new policy ___ next quarter.", options: ["will implement", "will be implemented", "is implemented", "implements"], answer: 1, explanation: "将来时被动：will be + 过去分词。" },
+
+  // 虚拟语气
+  { category: "虚拟语气", subcategory: "与现在相反", question: "If I ___ more time, I would finish the report.", options: ["have", "had", "have had", "has"], answer: 1, explanation: "与现在事实相反的虚拟：从句用过去式（be 用 were）。" },
+  { category: "虚拟语气", subcategory: "与过去相反", question: "If we ___ the plan earlier, we wouldn't have missed the deadline.", options: ["start", "started", "had started", "have started"], answer: 2, explanation: "与过去事实相反的虚拟：从句用 had + 过去分词。" },
+  { category: "虚拟语气", subcategory: "wish 从句", question: "I wish I ___ harder in school.", options: ["work", "worked", "had worked", "working"], answer: 1, explanation: "wish 表示与现在事实相反时，从句用过去式。" },
+
+  // 混合时态
+  { category: "综合", subcategory: "时态选择", question: "The building ___ last year and ___ next year.", options: ["was built / will be painted", "was building / will be painting", "built / will paint", "has been built / will paint"], answer: 0, explanation: "last year 用一般过去时被动，next year 用一般将来时被动。" },
+  { category: "综合", subcategory: "时态选择", question: "Don't disturb her. She ___ a very important meeting.", options: ["has", "has had", "is having", "will have"], answer: 2, explanation: "现在进行时可以表示现阶段正在进行的暂时性动作。" },
+];
