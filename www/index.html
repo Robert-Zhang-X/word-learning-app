@@ -1258,6 +1258,8 @@
                         <option value="50">50个</option>
                     </select>
                 </div>
+                <!-- Debug: 显示当前实际生效的 dailyLimit -->
+                <div id="daily-limit-debug" style="text-align:center;color:var(--text-light);font-size:0.75rem;margin-top:4px;"></div>
             </div>
         </div>
 
@@ -1901,6 +1903,8 @@
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
+                    console.log('[LoadState] Raw saved data keys:', Object.keys(parsed));
+                    console.log('[LoadState] parsed.settings:', JSON.stringify(parsed.settings));
                     // 逐字段安全合并，避免整体覆盖导致字段丢失
                     if (parsed.words && parsed.words.length > 0) {
                         state.words = parsed.words;
@@ -1917,6 +1921,9 @@
                     // settings：明确读取 dailyLimit，优先使用已保存的值
                     if (parsed.settings && typeof parsed.settings.dailyLimit === 'number' && parsed.settings.dailyLimit > 0) {
                         state.settings.dailyLimit = parsed.settings.dailyLimit;
+                        console.log('[LoadState] Loaded dailyLimit:', state.settings.dailyLimit);
+                    } else {
+                        console.log('[LoadState] No valid dailyLimit in saved data, using default:', state.settings.dailyLimit);
                     }
                     // stats 逐字段合并
                     if (parsed.stats) {
@@ -1925,9 +1932,13 @@
                     }
                     // 补充缺失的 example_cn 字段
                     fixMissingExampleCn();
+                    // 强制回写一次，确保格式是最新的
+                    saveState();
                 } catch(e) {
                     console.error('loadState failed:', e);
                 }
+            } else {
+                console.log('[LoadState] No saved state found, using defaults');
             }
         }
 
@@ -2477,6 +2488,7 @@
             state.sessionTotal = 0;
 
             const dailyLimit = state.settings.dailyLimit || 10;
+            console.log('[StartLearning] mode:', mode, ', dailyLimit:', dailyLimit, ', state.settings:', JSON.stringify(state.settings));
 
             // Get words based on mode
             if (mode === 'review') {
@@ -3085,7 +3097,9 @@
         function updateDailyLimit(value) {
             state.settings.dailyLimit = parseInt(value);
             saveState();
-            
+            console.log('[DailyLimit] Updated to:', state.settings.dailyLimit);
+            updateDailyLimitDebug();
+
             // Show feedback
             const select = document.getElementById('daily-limit-select');
             select.style.borderColor = 'var(--success)';
@@ -3094,16 +3108,25 @@
             }, 500);
         }
 
+        function updateDailyLimitDebug() {
+            const debug = document.getElementById('daily-limit-debug');
+            if (debug) {
+                debug.textContent = '当前生效: ' + (state.settings.dailyLimit || 10) + ' 个/次';
+            }
+        }
+
         function initDailyLimitSelect() {
             const select = document.getElementById('daily-limit-select');
             if (select) {
                 const limit = (state.settings && state.settings.dailyLimit) ? state.settings.dailyLimit : 10;
                 select.value = limit.toString();
+                console.log('[DailyLimit] initDailyLimitSelect - state.settings.dailyLimit:', limit, ', select.value:', select.value);
                 // 如果找不到对应选项（比如存了一个自定义值），fallback 到 10
                 if (!select.value || select.selectedIndex === -1) {
                     select.value = '10';
                     state.settings.dailyLimit = 10;
                 }
+                updateDailyLimitDebug();
             }
         }
 
