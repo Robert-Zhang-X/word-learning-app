@@ -1251,7 +1251,7 @@
                         cursor: pointer;
                     ">
                         <option value="5">5个</option>
-                        <option value="10" selected>10个</option>
+                        <option value="10">10个</option>
                         <option value="15">15个</option>
                         <option value="20">20个</option>
                         <option value="30">30个</option>
@@ -1899,24 +1899,35 @@
         function loadState() {
             const saved = localStorage.getItem('wordmaster-state');
             if (saved) {
-                const parsed = JSON.parse(saved);
-                // 合并保存的数据，但确保 words 和 customWords 有兜底
-                state = { ...state, ...parsed };
-                // 关键修复：如果 words 为空，使用 DEFAULT_WORDS
-                if (!state.words || state.words.length === 0) {
-                    state.words = [...DEFAULT_WORDS];
+                try {
+                    const parsed = JSON.parse(saved);
+                    // 逐字段安全合并，避免整体覆盖导致字段丢失
+                    if (parsed.words && parsed.words.length > 0) {
+                        state.words = parsed.words;
+                    }
+                    if (parsed.customWords) {
+                        state.customWords = parsed.customWords;
+                    }
+                    if (parsed.addedVocabularies) {
+                        state.addedVocabularies = parsed.addedVocabularies;
+                    }
+                    if (parsed.reviewQueue) {
+                        state.reviewQueue = parsed.reviewQueue;
+                    }
+                    // settings：明确读取 dailyLimit，优先使用已保存的值
+                    if (parsed.settings && typeof parsed.settings.dailyLimit === 'number' && parsed.settings.dailyLimit > 0) {
+                        state.settings.dailyLimit = parsed.settings.dailyLimit;
+                    }
+                    // stats 逐字段合并
+                    if (parsed.stats) {
+                        state.stats = { ...state.stats, ...parsed.stats };
+                        state.stats.dailyStats = parsed.stats.dailyStats || state.stats.dailyStats || [0,0,0,0,0,0,0];
+                    }
+                    // 补充缺失的 example_cn 字段
+                    fixMissingExampleCn();
+                } catch(e) {
+                    console.error('loadState failed:', e);
                 }
-                // 关键修复：如果 customWords 未定义，设为空数组
-                if (!state.customWords) {
-                    state.customWords = [];
-                }
-                // 关键修复：补充缺失的 example_cn 字段（从内置词库获取）
-                fixMissingExampleCn();
-                // Ensure stats structure
-                state.stats = { ...state.stats, ...(parsed.stats || {}) };
-                state.stats.dailyStats = state.stats.dailyStats || [0, 0, 0, 0, 0, 0, 0];
-                // Ensure settings structure
-                state.settings = { ...{ dailyLimit: 10 }, ...(parsed.settings || {}) };
             }
         }
 
@@ -3085,8 +3096,14 @@
 
         function initDailyLimitSelect() {
             const select = document.getElementById('daily-limit-select');
-            if (select && state.settings && state.settings.dailyLimit) {
-                select.value = state.settings.dailyLimit.toString();
+            if (select) {
+                const limit = (state.settings && state.settings.dailyLimit) ? state.settings.dailyLimit : 10;
+                select.value = limit.toString();
+                // 如果找不到对应选项（比如存了一个自定义值），fallback 到 10
+                if (!select.value || select.selectedIndex === -1) {
+                    select.value = '10';
+                    state.settings.dailyLimit = 10;
+                }
             }
         }
 
