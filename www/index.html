@@ -1258,7 +1258,7 @@
                         <option value="50">50个</option>
                     </select>
                 </div>
-                <!-- Debug: 显示当前实际生效的 dailyLimit -->
+                <!-- Debug: 显示当前实际生效的 dailyLimit 和可用词数 -->
                 <div id="daily-limit-debug" style="text-align:center;color:var(--text-light);font-size:0.75rem;margin-top:4px;"></div>
             </div>
         </div>
@@ -2492,12 +2492,19 @@
 
             // Get words based on mode
             if (mode === 'review') {
-                state.currentWords = getReviewQueue().slice(0, dailyLimit);
+                const reviewWords = getReviewQueue();
+                console.log('[StartLearning] review queue length:', reviewWords.length);
+                state.currentWords = reviewWords.slice(0, dailyLimit);
             } else {
-                const words = getAllWords().filter(w => w.status !== 'mastered');
+                const allWords = getAllWords();
+                const words = allWords.filter(w => w.status !== 'mastered');
+                console.log('[StartLearning] total words:', allWords.length, ', non-mastered:', words.length, ', dailyLimit:', dailyLimit);
                 // Shuffle and pick based on daily limit
                 state.currentWords = shuffleArray([...words]).slice(0, Math.min(dailyLimit, words.length));
             }
+
+            // 在控制台输出最终结果
+            console.log('[StartLearning] Final currentWords.length:', state.currentWords.length);
 
             if (state.currentWords.length === 0) {
                 // 显示友好的提示而非 alert
@@ -3111,7 +3118,10 @@
         function updateDailyLimitDebug() {
             const debug = document.getElementById('daily-limit-debug');
             if (debug) {
-                debug.textContent = '当前生效: ' + (state.settings.dailyLimit || 10) + ' 个/次';
+                const limit = state.settings.dailyLimit || 10;
+                const allWords = getAllWords();
+                const nonMastered = allWords.filter(w => w.status !== 'mastered').length;
+                debug.textContent = '当前生效: ' + limit + ' 个/次 | 可学习单词: ' + nonMastered + ' 个';
             }
         }
 
